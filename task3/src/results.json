@@ -1,63 +1,63 @@
 {
-  "tests": [{
-    "id": 2,
+  "tests": [
+    {"id": 2,
     "title": "Smoke test",
-    "value": ""
+    "value": "passed"
   }, {
     "id": 41,
     "title": "Debug test",
-    "value": ""
+    "value": "passed"
   }, {
     "id": 73,
     "title": "Performance test",
-    "value": "",
+    "value": "passed",
     "values": [{
       "id": 345,
       "title": "Maxperf",
-      "value": "",
+      "value": "passed",
       "values": [ {
         "id": 230,
         "title": "Percent",
         "values": [{
           "id": 234,
           "title": "200",
-          "value": ""
+          "value": "passed"
         }, {
           "id": 653,
           "title": "300",
-          "value": ""
+          "value": "passed"
         }]
       }]
     }, {
       "id": 110,
       "title": "Stability test",
-      "value": "",
+      "value": "passed",
       "values": [ {
         "id": 261,
         "title": "Percent",
         "values": [{
           "id": 238,
           "title": "160",
-          "value": ""
+          "value": "passed"
         }, {
           "id": 690,
           "title": "240",
-          "value": ""
+          "value": "passed"
         }]
       }]
     }]
   }, {
     "id": 122,
     "title": "Security test",
-    "value": "",
+    "value": "passed",
     "values": [{
       "id": 5321,
       "title": "Confidentiality",
-      "value": ""
+      "value": "passed"
     }, {
       "id": 5322,
       "title": "Integrity",
-      "value": ""
+      "value": "passed"
     }]
   }]
 }
