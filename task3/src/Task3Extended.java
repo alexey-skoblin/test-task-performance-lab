@@ -25,7 +25,7 @@ public class Task3Extended {
             for (Map.Entry<Long, Task> entry : values.entrySet()) {
                 result.get(entry.getKey()).setValue(entry.getValue().getValue());
             }
-            Files.write(Paths.get("src/results.json"), converter.toJson("results", new ArrayList<>(result.values())).getBytes());
+            Files.write(Paths.get("src/report.json"), converter.toJson("tests", new ArrayList<>(result.values())).getBytes());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -71,7 +71,7 @@ public class Task3Extended {
             private static final String REGEX_BEGIN = "^\\{,*\\s*\".*\":,*\\s*\\[";
             private static final String REGEX_END = "\\]\\s*\\}$";
 
-            private String removeTitle(String json) {
+            private String removeMainArrayInJson(String json) {
                 json = json.replaceFirst(REGEX_BEGIN, "");
                 json = json.replaceFirst(REGEX_END, "");
                 return json;
@@ -79,7 +79,7 @@ public class Task3Extended {
 
             public Map<Long, Task> getValues(String json) {
                 Map<Long, Task> taskMap = new HashMap<>();
-                json = removeTitle(json);
+                json = removeMainArrayInJson(json);
                 Pattern pattern = Pattern.compile(generatePattern());
                 Matcher matcher = pattern.matcher(json);
                 while (matcher.find()) {
@@ -104,6 +104,8 @@ public class Task3Extended {
             }
 
             private void setFieldValue(Task task, Field field, String fieldValue, Map<Long, Task> taskMap) {
+                try {
+
                     field.setAccessible(true);
                     Class<?> fieldType = field.getType();
                     if (fieldType == Long.class || fieldType == long.class) {
@@ -119,6 +121,9 @@ public class Task3Extended {
                     } else {
                         field.set(task, fieldValue.replace("\"", ""));
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 }
 
             public String toJson(String title, List<Task> tasks) {
@@ -132,8 +137,9 @@ public class Task3Extended {
             }
 
             public String toJson(Task task){
-                StringJoiner joinerField = new StringJoiner(",", "{", "}");
-                for (Field field : Task.class.getDeclaredFields()) {
+                try {
+                    StringJoiner joinerField = new StringJoiner(",", "{", "}");
+                    for (Field field : Task.class.getDeclaredFields()) {
                         field.setAccessible(true);
                         Object value = field.get(task);
                         if (value == null) {
@@ -151,8 +157,12 @@ public class Task3Extended {
                                     : "\"" + value + "\"";
                             joinerField.add(fieldName + fieldValue);
                         }
+                    }
+                    return joinerField.toString();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                return joinerField.toString();
+                return "";
             }
         }
     }

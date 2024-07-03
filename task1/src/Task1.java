@@ -7,7 +7,7 @@ import java.util.stream.IntStream;
 public class Task1 {
 
     public static void main(String[] args) {
-        CircleList circleList = new CircleList(args);
+        CircleList circleList = CircleList.fromConsole(args);
         List<Integer> list = circleList.findCircularPathAsList();
         StringBuilder stringBuilder = new StringBuilder();
         list.forEach(stringBuilder::append);
@@ -25,26 +25,33 @@ public class Task1 {
         private final Integer m;
         private final List<Integer> list;
 
-        public CircleList(String[] args) {
+        public CircleList(int n, int m) {
+            if (n < 1 || m < 1) {
+                String s = "Параметр " + (n < 1 ? "n = " + n : "m = " + m) + " должен быть больше нуля.";
+                throw new IllegalArgumentException(ERROR_MSG_INVALID_NUMBER_VALUE + s);
+            }
+            this.n = n;
+            this.m = m;
+            this.list = IntStream.range(1, this.n + 1)
+                    .boxed()
+                    .collect(Collectors.toList());
+        }
+
+        public static CircleList fromConsole(String... args) {
             if (args.length == 0) {
                 throw new IllegalArgumentException(ERROR_MSG_NO_ARGS);
             }
             if (args.length < COUNT_ARGS) {
                 throw new IllegalArgumentException(ERROR_MSG_INVALID_ARGS_COUNT);
             }
+            int n, m;
             try {
-                this.n = Integer.valueOf(args[0]);
-                this.m = Integer.valueOf(args[1]);
-            } catch (Exception e) {
+                n = Integer.parseInt(args[0]);
+                m = Integer.parseInt(args[1]);
+            } catch (NumberFormatException e) {
                 throw new IllegalArgumentException(ERROR_MSG_INVALID_NUMBER_FORMAT, e);
             }
-            if (n < 1 || m < 1) {
-                String s = "Параметр " + (n < 1 ? "n = " + n : "m = " + m) + " должен быть больше нуля.";
-                throw new IllegalArgumentException(ERROR_MSG_INVALID_NUMBER_VALUE + s);
-            }
-            list = IntStream.range(1, n + 1)
-                    .boxed()
-                    .collect(Collectors.toList());
+            return new CircleList(n, m);
         }
 
         public Integer getElement(int index) {
